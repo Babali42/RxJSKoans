@@ -15,5 +15,8 @@
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "rxjs": "^7.8.2"
   }
 }

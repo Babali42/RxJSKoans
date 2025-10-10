@@ -1,5 +1,6 @@
-import {Observable, of, Subject, tap} from "rxjs";
+import {of, Subject, tap} from "rxjs";
 import {fromArrayLike} from "rxjs/internal/observable/innerFrom";
+import {Rangea} from "./Range";
 
 var __ = 'Fill in the blank';
 
@@ -140,16 +141,17 @@ describe("", () => {
 
         expect(sum).toBe(__); // Only 1 + 2 before unsubscribe
     });
+
+    test('all events will be received', function () {
+        let received = 'Working ';
+        const numbers = Rangea.create(9, 5);
+
+        fromArrayLike(numbers).subscribe(function (x) { received += x; });
+
+      expect(received).toEqual(__);
+    });
 })
 
-// test('all events will be received', function () {
-//   var received = 'Working ';
-//   var numbers = Range.create(9, 5);
-//
-//   Observable.from(numbers).subscribe(function (x) { received += x; });
-//
-//   equal("Working 98765", received);
-// });
 //
 // test('do things in the middle', function () {
 //   var status = [];

@@ -18,17 +18,22 @@ describe("", () => {
         });
     });
 
-    it("Should subscribe to a subject",  (done: jest.DoneCallback)  => {
+    it("Should subscribe to a subject", (done: jest.DoneCallback) => {
         var events = new Subject();
-        events.subscribe(function (x) { expect(x).toBe(__); done(); });
+        events.subscribe(function (x) {
+            expect(x).toBe(__);
+            done();
+        });
         events.next(37);
     });
 
     it("how event streams relate to observables", (done: jest.DoneCallback) => {
         let observableResult = 1;
-        of(73).subscribe(x => { observableResult = x; });
+        of(73).subscribe(x => {
+            observableResult = x;
+        });
 
-        let eventStreamResult = 1;
+        let eventStreamResult = __;
         var events = new Subject();
         //@ts-ignore
         events.subscribe(x => eventStreamResult = x);
@@ -43,7 +48,10 @@ describe("", () => {
         var events = new Subject();
 
         //@ts-ignore
-        events.subscribe(function (x) { eventStreamResult += x; });
+        events.subscribe(function (x) {
+            // @ts-ignore
+            eventStreamResult += x;
+        });
 
         events.next(10);
         events.next(7);
@@ -52,29 +60,18 @@ describe("", () => {
         done();
     })
 
-    it("", (done: jest.DoneCallback) => {
-        test('the last event', function () {
-            var received = '';
-            var names = ['foo', 'bar'];
-            fromArrayLike(names).subscribe(function (x) {
-                received = x;
-            });
-
-            expect(received).toEqual('bar');
-            done();
+    it("the last event", (done: jest.DoneCallback) => {
+        var received = '';
+        var names = ['foo', 'bar'];
+        fromArrayLike(names).subscribe(function (x) {
+            received = x;
         });
+
+        expect(received).toEqual(__);
+        done();
     });
 });
 
-//
-// test('the last event', function () {
-//   var received = '';
-//   var names = ['foo', 'bar'];
-//   Observable.from(names).subscribe(function (x) { received = x; });
-//
-//   equal("bar", received);
-// });
-//
 // test('everything counts', function () {
 //   var received = 0;
 //   var numbers = [3, 4];

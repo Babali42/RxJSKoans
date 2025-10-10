@@ -1,24 +1,24 @@
-import {of, Subject} from "rxjs";
+import {Observable, of, Subject, tap} from "rxjs";
 import {fromArrayLike} from "rxjs/internal/observable/innerFrom";
 
 var __ = 'Fill in the blank';
 
 describe("", () => {
-    it('simple subscription', (done: jest.DoneCallback) => {
+    test('simple subscription', (done: jest.DoneCallback) => {
         of(42).subscribe(x => {
             expect(x).toBe(__);
             done();
-        });
-    });
+        })
+    })
 
-    it('what comes in goes out', (done: jest.DoneCallback) => {
+    test('what comes in goes out', (done: jest.DoneCallback) => {
         of(__).subscribe(x => {
             expect(x).toBe(42);
             done();
-        });
-    });
+        })
+    })
 
-    it("subscribe to a subject", (done: jest.DoneCallback) => {
+    test("subscribe to a subject", (done: jest.DoneCallback) => {
         var events = new Subject();
         events.subscribe(function (x) {
             expect(x).toBe(__);
@@ -27,7 +27,7 @@ describe("", () => {
         events.next(37);
     });
 
-    it("how event streams relate to observables", (done: jest.DoneCallback) => {
+    test("how event streams relate to observables", (done: jest.DoneCallback) => {
         let observableResult = 1;
         of(73).subscribe(x => {
             observableResult = x;
@@ -43,7 +43,7 @@ describe("", () => {
         done();
     })
 
-    it("events with multiples values", (done: jest.DoneCallback) => {
+    test("events with multiples values", (done: jest.DoneCallback) => {
         var eventStreamResult = 0;
         var events = new Subject();
 
@@ -60,7 +60,7 @@ describe("", () => {
         done();
     })
 
-    it("get the last event", (done: jest.DoneCallback) => {
+    test("get the last event", (done: jest.DoneCallback) => {
         var received = '';
         var names = ['foo', 'bar'];
         fromArrayLike(names).subscribe(function (x) {
@@ -69,28 +69,79 @@ describe("", () => {
 
         expect(received).toEqual(__);
         done();
-    });
-});
+    })
 
-// test('everything counts', function () {
-//   var received = 0;
-//   var numbers = [3, 4];
-//   Observable.from(numbers).subscribe(function (x) { received += x; });
-//
-//   equal(7, received);
-// });
-//
-// test('this is still an event stream', function () {
-//   var received = 0;
-//   var numbers = new Subject();
-//   numbers.subscribe(function (x) { received += x; });
-//
-//   numbers.onNext(10);
-//   numbers.onNext(5);
-//
-//   equal(15, received);
-// });
-//
+    test("everything counts", () => {
+        var received = 0;
+        var numbers = [3, 4];
+        fromArrayLike(numbers).subscribe(function (x) {
+            received += x;
+        });
+
+        expect(received).toEqual(__);
+    })
+
+    test("this is still an event stream", () => {
+        var received = 0;
+        var numbers = new Subject();
+        numbers.subscribe(function (x) {
+            // @ts-ignore
+            received += x;
+        });
+
+        numbers.next(10);
+        numbers.next(5);
+
+        expect(received).toEqual(__);
+    })
+
+    test('events before you subscribe do not count', () => {
+        let sum = 0;
+        const numbers = new Subject();
+        const observable = numbers.pipe(
+            tap(n => { // @ts-ignore
+                sum += n; })
+        );
+
+        // Emit events before subscription
+        numbers.next(1);
+        numbers.next(2);
+
+        // Subscribe after first emissions
+        observable.subscribe();
+
+        // Emit more events after subscription
+        numbers.next(3);
+        numbers.next(4);
+
+        expect(sum).toBe(__); // Only 3 + 4 after subscription
+    });
+
+    test('events after you unsubscribe don’t count', () => {
+        let sum = 0;
+        const numbers = new Subject();
+        const observable = numbers.pipe(
+            tap(n => { // @ts-ignore
+                sum += n; })
+        );
+
+        const subscription = observable.subscribe();
+
+        // Emit events before unsubscribing
+        numbers.next(1);
+        numbers.next(2);
+
+        // Unsubscribe
+        subscription.unsubscribe();
+
+        // Emit events after unsubscribing
+        numbers.next(3);
+        numbers.next(4);
+
+        expect(sum).toBe(__); // Only 1 + 2 before unsubscribe
+    });
+})
+
 // test('all events will be received', function () {
 //   var received = 'Working ';
 //   var numbers = Range.create(9, 5);
@@ -118,39 +169,6 @@ describe("", () => {
 //   observable.__();
 //
 //   equal(1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10, sum);
-// });
-//
-// test('events before you subscribe do not count', function () {
-//   var sum = 0,
-//       numbers = new Subject(),
-//       observable = numbers.tap(function (n) { sum += n; });
-//
-//   numbers.onNext(1);
-//   numbers.onNext(2);
-//
-//   observable.subscribe();
-//
-//   numbers.onNext(3);
-//   numbers.onNext(4);
-//
-//   equal(__, sum);
-// });
-//
-// test('events after you unsubscribe dont count', function () {
-//   var sum = 0,
-//       numbers = new Subject(),
-//       observable = numbers.tap(function (n) { sum += n; }),
-//       subscription = observable.subscribe();
-//
-//   numbers.onNext(1);
-//   numbers.onNext(2);
-//
-//   subscription.dispose();
-//
-//   numbers.onNext(3);
-//   numbers.onNext(4);
-//
-//   equal(__, sum);
 // });
 //
 // test('events while subscribing', function () {

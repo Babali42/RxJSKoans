@@ -18,7 +18,7 @@ describe("", () => {
         });
     });
 
-    it("Should subscribe to a subject", (done: jest.DoneCallback) => {
+    it("subscribe to a subject", (done: jest.DoneCallback) => {
         var events = new Subject();
         events.subscribe(function (x) {
             expect(x).toBe(__);
@@ -60,7 +60,7 @@ describe("", () => {
         done();
     })
 
-    it("the last event", (done: jest.DoneCallback) => {
+    it("get the last event", (done: jest.DoneCallback) => {
         var received = '';
         var names = ['foo', 'bar'];
         fromArrayLike(names).subscribe(function (x) {

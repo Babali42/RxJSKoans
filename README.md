@@ -1,18 +1,5 @@
-# TypeScript project with Tests
+# RxJS Koans
 
-This repository can be used as a template for creating a TypeScript project using Jest for testing.
+The Koans walk you along the path to enlightenment in order to learn RxJS.
 
-## Instructions
-
-- Click the "Use this template" button
-
-- Click "Create new repository"
-
-- Give your repository a name and click "Create repository from template"
-
-- Clone down your new repository to your computer
-
-- Navigate to the directory on your command line
-
-- Run `npm install` followed by `npm test` to run the tests
-
+An up to date version of https://github.com/Reactive-Extensions/RxJSKoans/
